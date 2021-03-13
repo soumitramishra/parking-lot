@@ -3,24 +3,29 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 
-import { AppRoutingModule } from './app-routing.module';
+import {Routes, RouterModule} from '@angular/router';
+
 
 
 import { AppComponent } from './app.component';
-import { AdminComponent } from './admin/admin.component';
-import { LoginComponent } from './login/login.component';
+import {LoginComponent} from './login/login.component';
+import {HomeComponent} from './home/home.component';
 
-
+const appRoutes: Routes = [
+  {path: 'login', redirectTo: '/'},
+  {path: 'home', component:HomeComponent},
+  {path: '**', redirectTo:'/'}
+]
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdminComponent,
-    LoginComponent
+    LoginComponent,
+    HomeComponent
       ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    RouterModule.forRoot(appRoutes),
     FormsModule,
     HttpClientModule
   ],

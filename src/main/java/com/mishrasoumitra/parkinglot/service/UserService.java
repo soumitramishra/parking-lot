@@ -1,5 +1,6 @@
 package com.mishrasoumitra.parkinglot.service;
 
+import com.mishrasoumitra.parkinglot.exceptions.IncorrectPasswordException;
 import com.mishrasoumitra.parkinglot.exceptions.UserAlreadyExistsException;
 import com.mishrasoumitra.parkinglot.exceptions.UserNotFoundException;
 import com.mishrasoumitra.parkinglot.model.User;
@@ -11,6 +12,7 @@ import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.List;
 
 
@@ -70,5 +72,24 @@ public class UserService {
         if(!userRepository.existsById(id))
             throw new UserNotFoundException(id);
         userRepository.deleteById(id);
+    }
+
+    public String login(String userName, String password) throws UserNotFoundException, IncorrectPasswordException {
+        if(!userRepository.existsById(userName))
+            throw new UserNotFoundException(userName);
+        User user = userRepository.findById(userName).get();
+        String storedPassword = user.getPassword();
+        String enteredPassword = password;
+        String encryptedPassword = encryptPassword(enteredPassword);
+        System.out.println(storedPassword+":"+enteredPassword+":"+encryptedPassword);
+        if(!encryptPassword(password).equals(user.getPassword())) {
+            throw new IncorrectPasswordException();
+        }
+        else {
+            String sessionId = encryptPassword(userName + new Date().getTime());
+            user.setSessionId(sessionId);
+            userRepository.save(user);
+            return user.getSessionId();
+        }
     }
 }
