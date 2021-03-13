@@ -1,0 +1,8 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <app-route></app-route> -->
+            <app-login [loginStatus]="loginPagestatus" (userLoginEvent)="attemptLogin($event)" (userSignUpEvent)="attemptSignUp($event)"></app-login>
+        </div>
+    </div>
+</div>

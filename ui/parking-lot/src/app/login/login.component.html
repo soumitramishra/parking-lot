@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col-md-12">
+        <h1>Parking Lot Management</h1>
+        <h2>{{cItem}}</h2>
+    </div>
+</div>
+<div class="row" *ngIf="!signUp">
+    <div class="col-md-7">
+        <form>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input  type="text" class="form-control" name="username" id="username" placeholder="Username" [(ngModel)]="userName">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Password">
+            </div>
+            <button (click)="onLogin()" type="submit" class="btn btn-success">Sign In</button>
+            <button (click)="signUp=true;loginStatus=null" type="button" class="btn btn-warning">Create new account</button>
+        </form>
+    </div>
+</div>
+
+<div class="row" *ngIf="signUp">
+    <div class="col-md-7">
+        <form>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input  type="text" class="form-control" name="username" id="username" placeholder="Username" [(ngModel)]="userName">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label for="firstname">First Name</label>
+                <input  type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" [(ngModel)]="firstName">
+            </div>
+            <div class="form-group">
+                <label for="lastname">Last Name</label>
+                <input  type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" [(ngModel)]="lastName">
+            </div>
+            <div class="form-group">
+                <label for="userType">Select User Type</label>
+                <select class="form-control" id="exampleFormControlSelect1" name="usertype" id="usertype" [(ngModel)]="userType">
+                    <option *ngFor="let t of userTypes" [ngValue]="t">{{t}}</option>
+                  
+                </select>
+            </div>
+            <button (click)="onSignUp()" type="submit" class="btn btn-success">Sign Up</button>
+            <button (click)="signUp=false;loginStatus=null" type="button" class="btn btn-warning">Back to Sign In</button>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6" [innerText]="loginStatus"></div>
+</div>
