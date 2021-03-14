@@ -1,0 +1,49 @@
+
+<div class="row" *ngIf="contentReady">
+    <h1>Details of Parking Lot {{parkingLotId}}</h1>
+    <div class="col-md-8">
+        <table class="table">
+            <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Occupied</th>
+                  <th scope="col">Vacant</th>
+                </tr>
+              </thead>
+            <tbody>
+              <tr>
+                  <th scope="row">All</th>
+                <td>{{parkingSpots.length}}</td>
+                <td>{{parkingSpots.length-(totalSmallUnoccupied+totalMediumUnoccupied+totalSmallUnoccupied)}}</td>
+                <td>{{totalSmallUnoccupied+totalMediumUnoccupied+totalSmallUnoccupied}}</td>
+              </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                  <th scope="row"></th>
+                  <td>{{parkingSpots.length}}</td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                  <th scope="row">Total no of small spots</th>
+                  <td>{{totalNoOfSmallSpots}}</td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                  <th scope="row">Total no of medium spots</th>
+                  <td>{{totalNoOfMediumSpots}}</td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                  <th scope="row">Total no of large spots</th>
+                  <td>{{totalNoOfLargeSpots}}</td>
+                </tr>
+            </tbody>
+          </table>
+    </div>
+</div>
+

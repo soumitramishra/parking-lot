@@ -4,7 +4,7 @@
       <div class="col-md-12">
           <app-login *ngIf="!checkAlreadyLoggedIn()" [loginStatus]="loginPagestatus" (userSignUpEvent)="attemptSignUp($event)"
            (userLoginEvent)="attemptLogin($event)" (userSignUpEvent)="attemptSignUp($event)"></app-login>
-           <router-outlet></router-outlet>
+           <router-outlet *ngIf="checkAlreadyLoggedIn()"></router-outlet>
         </div>
   </div>
 </div>

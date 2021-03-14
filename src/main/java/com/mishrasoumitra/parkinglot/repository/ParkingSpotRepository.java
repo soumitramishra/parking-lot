@@ -11,4 +11,7 @@ import java.util.List;
 public interface ParkingSpotRepository extends JpaRepository<ParkingSpot, ParkingSpotId> {
     @Query("SELECT p from ParkingSpot p where p.occupied=false and p.spotSize =:spotSize and p.parkingSpotId.parkingLotId=:parkingLotId")
     List<ParkingSpot> findBySize(@Param("parkingLotId") int parkingLotId, @Param("spotSize") String sp);
+
+    @Query("SELECT p from ParkingSpot p where p.parkingSpotId.parkingLotId =:parkingLotId")
+    List<ParkingSpot> getAllParkingSpotsByParkingLotId(@Param("parkingLotId") int parkingLotId);
 }

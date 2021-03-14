@@ -35,47 +35,46 @@ export class AppComponent {
   attemptLogin(user: User) {
     console.log("hereherherherhehrrhehehe");
     console.log("user "+user.userName+" trying to login");
-    this.http.post("http://localhost:8081/users/login",user).pipe(
-   map(
-     responseData=>{
-       console.log(responseData["successStatus"]);
-       var sessionId = responseData["message"];
-       var successStatus = responseData["successStatus"];
-       if(successStatus==true) {
-         this.cookieService.set("parkingLotUsernName", user.userName);
-         this.cookieService.set("parkingLotSessionId", sessionId);
-         this.userSessionId = sessionId;
-         this.router.navigate(['/home']);
-       }
-       return sessionId;
+    this.http.put("http://localhost:8081/users/login",user).
+     subscribe(
+      responseData=>{
+        
+        var sessionId = responseData["message"];
+        this.cookieService.set("parkingLotUsernName", user.userName);
+        this.cookieService.set("parkingLotSessionId", sessionId);
+        this.userSessionId = sessionId;
+        this.router.navigate(['/home']);
+        
+      },error=>{this.loginPagestatus=error["error"];
+      console.log(error)});
      }
-   )
-  ).
-  subscribe(
-    message=>this.loginPagestatus=message);
-  }
-
+map   
   attemptSignUp(newUser: User) {
     console.log("user "+newUser.userName+" trying to signUp");
   
-  this.http.post("http://localhost:8081/users/",newUser).pipe(
-   map(
-     responseData=>{
-       console.log(responseData);
-       var message = responseData["message"];
-      //  for(const key in responseData) {
-      //   message=responseData[key];
-      //  }
-       return message;
-     }
-
-   )
-  ).
+  this.http.post("http://localhost:8081/users/",newUser).
+ 
   
   
   subscribe(
     
-    message=>this.loginPagestatus=message);
+    responseData=>{
+      console.log("This is from RESPONSE");
+      console.log(responseData);
+      console.log('---');
+      this.loginPagestatus = responseData["message"];
+      
+    }, errorReceived=>{
+      
+      console.log("This is from ERROR"+errorReceived);
+      console.log(errorReceived);
+      console.log('---');
+      if(errorReceived["status"]==409) {
+      this.loginPagestatus=errorReceived["error"];
+      }
+    }
+  );
   
+
   }
 }

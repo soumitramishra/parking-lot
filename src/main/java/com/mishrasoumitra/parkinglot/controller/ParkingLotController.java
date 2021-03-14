@@ -1,7 +1,9 @@
 package com.mishrasoumitra.parkinglot.controller;
 
 import com.mishrasoumitra.parkinglot.exceptions.InvalidParkingSpotSizeException;
+import com.mishrasoumitra.parkinglot.exceptions.ParkingLotNotFoundException;
 import com.mishrasoumitra.parkinglot.exceptions.ParkingNotAvailableException;
+import com.mishrasoumitra.parkinglot.model.ParkingDetails;
 import com.mishrasoumitra.parkinglot.model.ParkingLot;
 
 import com.mishrasoumitra.parkinglot.model.ParkingSpot;
@@ -30,6 +32,7 @@ public class ParkingLotController {
         return parkingLotService.listAllParkingLots();
     }
 
+
     @PostMapping("")
     public ResponseEntity<?> add(@RequestBody ParkingLot parkingLot) {
         parkingLot = parkingLotService.addParking(parkingLot);
@@ -37,18 +40,42 @@ public class ParkingLotController {
         return new ResponseEntity<>(new Response("Created new parkinglot with ID "+parkingLot.getParkingLotId()),HttpStatus.OK);
     }
 
-    @GetMapping("/{parkingLotId}/{size}")
-    public ResponseEntity<?> getOneEmptySpotBySize(@PathVariable(name = "parkingLotId") int parkingLotId,
-                                             @PathVariable(name = "size") String size) {
-        System.out.println("here");
-        ParkingSpot parkingSpot= null;
+    @GetMapping("/{parkingLotId}")
+    public ResponseEntity<?> getParkingDetails(@PathVariable(name = "parkingLotId") int parkingLotId) {
         try {
-            parkingSpot = parkingSpotService.getOneEmptySpot(parkingLotId, size);
-        } catch (InvalidParkingSpotSizeException e) {
-            return new ResponseEntity<>(new Response(e.getMessage(),false),HttpStatus.OK);
-        } catch (ParkingNotAvailableException e) {
-            return new ResponseEntity<>(new Response(e.getMessage(),false),HttpStatus.OK);
+            ParkingLot parkingLot = parkingLotService.getParkingById(parkingLotId);
+            List<ParkingSpot> parkingSpots = parkingSpotService.getAllParkingSpots(parkingLotId);
+            ParkingDetails parkingDetails = new ParkingDetails();
+            parkingDetails.setParkingLot(parkingLot);
+            parkingDetails.setParkingSpots(parkingSpots);
+            return new ResponseEntity<>(parkingDetails, HttpStatus.OK);
+        } catch (ParkingLotNotFoundException e) {
+            return new ResponseEntity<>(new Response(e.getMessage(),false), HttpStatus.OK);
         }
-        return new ResponseEntity<>(parkingSpot, HttpStatus.OK);
+    }
+    @GetMapping("/getemptyspot/{parkingLotId}/{size}")
+    public ResponseEntity<?> getOneEmptySpot(@PathVariable(name = "parkingLotId") int parkingLotId,
+                                             @PathVariable(name = "size") String size) {
+        try {
+            ParkingSpot parkingSpot = parkingSpotService.getOneEmptySpot(parkingLotId, size);
+            return new ResponseEntity<>(parkingSpot, HttpStatus.OK);
+        }
+        catch (InvalidParkingSpotSizeException e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        } catch (ParkingNotAvailableException e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+
+    }
+    @PutMapping("/updateParkingSpot")
+    public ResponseEntity<?> addVehicle(@RequestBody ParkingSpot parkingSpot) {
+            parkingSpotService.updateParkingSpot(parkingSpot);
+            return new ResponseEntity<>(String.format(
+                    "Vehicle assigned to Parking Lot %d, Floor %d, Row %d, " +
+                            "Spot %d", parkingSpot.getParkingSpotId().getParkingLotId(),
+                    parkingSpot.getParkingSpotId().getFloorNo(),
+                    parkingSpot.getParkingSpotId().getRowNo(),
+                    parkingSpot.getParkingSpotId().getSpotNo()),
+                    HttpStatus.OK);
     }
 }

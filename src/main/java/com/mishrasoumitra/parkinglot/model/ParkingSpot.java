@@ -2,6 +2,7 @@ package com.mishrasoumitra.parkinglot.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name="parking_spots")
@@ -11,7 +12,7 @@ public class ParkingSpot {
 
     private String spotSize;
     private boolean occupied;
-    String vehicleNo;
+    private String vehicleNo;
 
     public ParkingSpotId getParkingSpotId() {
         return parkingSpotId;
@@ -43,6 +44,22 @@ public class ParkingSpot {
 
     public void setVehicleNo(String vehicleNo) {
         this.vehicleNo = vehicleNo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ParkingSpot that = (ParkingSpot) o;
+        return occupied == that.occupied &&
+                Objects.equals(parkingSpotId, that.parkingSpotId) &&
+                Objects.equals(spotSize, that.spotSize) &&
+                Objects.equals(vehicleNo, that.vehicleNo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(parkingSpotId, spotSize, occupied, vehicleNo);
     }
 }
 

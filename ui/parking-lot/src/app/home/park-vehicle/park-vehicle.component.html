@@ -1,0 +1,27 @@
+<h1>Park a vehicle in Parking Lot {{parkingLotId}}</h1>
+<div  *ngIf="parkingLotId!=null" class="row">
+    <div class="col-md-12">
+        <form>
+            <div class="form-group">
+                <label for="vehicleNo">Vehicle no</label>
+                <input type="text" class="form-control" name="vehicleNo" id="vehicleNo" placeholder="Vehicle Reg No" [(ngModel)]="vehicleNo">
+            </div>
+            <div class="form-group">
+                <label for="size">Vehicle Size</label>
+                <select class="form-control" name="size" id="size" [(ngModel)]="size">
+                    <option [ngValue]="s" *ngFor="let s of sizes">{{s}}</option>
+                </select>
+            </div>
+           
+            <button (click)="getEmptySpot()" type="submit" class="btn btn-warning">Find Spot</button>
+            
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{responseMessage}}
+    </div>
+</div>
+<button *ngIf="showConfirmButton" (click)="confirmBooking()" type="submit" class="btn btn-success">Confirm Spot</button>
+

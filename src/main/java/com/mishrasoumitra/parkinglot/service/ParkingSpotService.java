@@ -18,7 +18,6 @@ public class ParkingSpotService {
     @Autowired
     public ParkingSpotRepository parkingSpotRepository;
 
-
     public ParkingSpot getOneEmptySpot(int parkingLotId, String size) throws InvalidParkingSpotSizeException, ParkingNotAvailableException {
 
         if(!size.equals("small") && !size.equals("medium") && !size.equals("large")) {
@@ -30,6 +29,11 @@ public class ParkingSpotService {
         }
         return desiredParkingSpots.get(0);
     }
+
+    public void updateParkingSpot(ParkingSpot parkingSpot) {
+        parkingSpotRepository.save(parkingSpot);
+    }
+
 
     public void addParkingSpotsForNewParkingLot(ParkingLot parkingLot) {
         int F = parkingLot.getNoOfFloors();
@@ -62,6 +66,10 @@ public class ParkingSpotService {
                 }
             }
         }
+    }
+
+    public List<ParkingSpot> getAllParkingSpots(int parkingLotId) {
+        return parkingSpotRepository.getAllParkingSpotsByParkingLotId(parkingLotId);
     }
 
 }

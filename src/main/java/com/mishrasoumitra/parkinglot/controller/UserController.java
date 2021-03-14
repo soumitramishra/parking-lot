@@ -31,7 +31,7 @@ public class UserController {
             User user = userService.getUser(userName);
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (UserNotFoundException e) {
-            return new ResponseEntity<>(new Response(e.getMessage(),false), HttpStatus.OK);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -40,10 +40,10 @@ public class UserController {
         try {
             userService.addUser(user);
 
-            return new ResponseEntity<>(new Response("Successfully created new user"),HttpStatus.OK);
+            return new ResponseEntity<>(new Response("Successfully added new user "+user.getUserName()),HttpStatus.OK);
         }
         catch(UserAlreadyExistsException e) {
-            return new ResponseEntity<>(new Response(String.format("Username %s already exist, try another",user.getUserName()),false), HttpStatus.OK);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
@@ -65,7 +65,7 @@ public class UserController {
             return new ResponseEntity<>(new Response("Successfully updated user"),HttpStatus.OK);
         }
         catch (UserNotFoundException e) {
-            return new ResponseEntity<>(new Response(e.getMessage(),false),HttpStatus.OK);
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
         }
     }
 
@@ -76,21 +76,21 @@ public class UserController {
             return new ResponseEntity<>(new Response(String.format("User %s deleted successfully", userName)),HttpStatus.OK);
         }
         catch(UserNotFoundException e) {
-            return new ResponseEntity<>(new Response(e.getMessage(),false),HttpStatus.OK);
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping("/login")
+    @PutMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
         try {
             String sessionId = userService.login(user.getUserName(), user.getPassword());
             return new ResponseEntity<>(new Response(sessionId), HttpStatus.OK);
         }
         catch(UserNotFoundException e) {
-            return new ResponseEntity<>(new Response(e.getMessage(), false), HttpStatus.OK);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
         catch (IncorrectPasswordException e) {
-            return new ResponseEntity<>(new Response(e.getMessage(), false), HttpStatus.OK);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
 

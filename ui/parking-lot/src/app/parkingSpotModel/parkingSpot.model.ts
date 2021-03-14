@@ -6,7 +6,6 @@ export class ParkingSpot {
     }
     public spotSize:string;
     public vehicleNo:string;
-    
 
     constructor(parkingSpotId:{
             parkingLotId:number,
