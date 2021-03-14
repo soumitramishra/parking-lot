@@ -10,19 +10,24 @@ import {Routes, RouterModule} from '@angular/router';
 import { AppComponent } from './app.component';
 import {LoginComponent} from './login/login.component';
 import {HomeComponent} from './home/home.component';
+import { HeaderComponent } from './header/header.component';
+import { NewParkingLotComponent } from './home/new-parking-lot/new-parking-lot.component';
 
 const appRoutes: Routes = [
   {path: 'login', redirectTo: '/'},
   {path: 'home', component:HomeComponent},
-  {path: '**', redirectTo:'/'}
+  {path: 'newParkingLot', component:NewParkingLotComponent},
+  {path: '**', redirectTo:'/home'}
 ]
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
-      ],
+    HomeComponent,
+    HeaderComponent,
+    NewParkingLotComponent
+        ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),

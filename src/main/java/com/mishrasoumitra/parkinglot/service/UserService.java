@@ -39,6 +39,7 @@ public class UserService {
         if (userRepository.existsById(user.getUserName())) {
             throw new UserAlreadyExistsException(user.getUserName());
         }
+
         user.setPassword(encryptPassword(user.getPassword()));
         userRepository.save(user);
     }

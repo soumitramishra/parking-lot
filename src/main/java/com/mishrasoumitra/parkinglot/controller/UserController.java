@@ -1,6 +1,7 @@
 package com.mishrasoumitra.parkinglot.controller;
 
 import com.mishrasoumitra.parkinglot.exceptions.IncorrectPasswordException;
+import com.mishrasoumitra.parkinglot.exceptions.UserAlreadyExistsException;
 import com.mishrasoumitra.parkinglot.exceptions.UserNotFoundException;
 import com.mishrasoumitra.parkinglot.model.Response;
 import com.mishrasoumitra.parkinglot.model.User;
@@ -41,7 +42,7 @@ public class UserController {
 
             return new ResponseEntity<>(new Response("Successfully created new user"),HttpStatus.OK);
         }
-        catch(Exception e) {
+        catch(UserAlreadyExistsException e) {
             return new ResponseEntity<>(new Response(String.format("Username %s already exist, try another",user.getUserName()),false), HttpStatus.OK);
         }
     }

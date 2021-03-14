@@ -16,9 +16,5 @@ export class HomeComponent implements OnInit {
     }
   
   }
-  signout() {
-    this.cookieService.delete("parkingLotSessionId");
-    this.cookieService.delete("parkingLotUsernName");
-    this.router.navigate(['/']);
-  }
+  
 }
